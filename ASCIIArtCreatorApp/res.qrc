@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/qcssfile.css</file>
+        <file>res/icons/about.png</file>
+        <file>res/icons/copy.png</file>
+        <file>res/icons/cut.png</file>
+        <file>res/icons/new.png</file>
+        <file>res/icons/open.png</file>
+        <file>res/icons/paste.png</file>
+        <file>res/icons/print.png</file>
+        <file>res/icons/save.png</file>
+        <file>res/icons/start.png</file>
+    </qresource>
+</RCC>

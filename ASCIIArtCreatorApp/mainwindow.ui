@@ -89,13 +89,26 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Hide Image</string>
-            </property>
-            <property name="tristate">
-             <bool>false</bool>
-            </property>
+           <widget class="QWidget" name="widget_5" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QCheckBox" name="checkBox">
+               <property name="text">
+                <string>Hide Image</string>
+               </property>
+               <property name="tristate">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="invertColorCheckBox">
+               <property name="text">
+                <string>Invevrt Color</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -177,7 +190,7 @@
             <x>0</x>
             <y>0</y>
             <width>364</width>
-            <height>302</height>
+            <height>280</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">

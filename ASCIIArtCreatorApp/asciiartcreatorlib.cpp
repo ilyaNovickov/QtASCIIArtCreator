@@ -60,10 +60,10 @@ namespace ASCIIArtCreatorLib {
         };
     //Методы для обработки картинок
     QString getCharByColor(const QColor, const QVector<QString>);
-    QString makeArt(const QImage *, const QVector<QString>);
+    QString makeArt(const QImage *, const QVector<QString>, bool invertColor = false);
     QString makeArt(const QPixmap *, const QVector<QString>);
 
-    QString makeBrialleArt(const QImage *);
+    QString makeBrialleArt(const QImage *, bool invertColor = false);
     QString getBrialleSymbol(const QImage *);
 }
 
@@ -88,7 +88,7 @@ QString ASCIIArtCreatorLib::getCharByColor(const QColor color, const QVector<QSt
 }
 
 //Функция получения ASCII картинки
-QString ASCIIArtCreatorLib::makeArt(const QImage *image, const QVector<QString> formatArray)
+QString ASCIIArtCreatorLib::makeArt(const QImage *image, const QVector<QString> formatArray, bool invertColor)
 {
     //Объявление пустой картинки серого цвета
     QImage grayImg;
@@ -100,6 +100,8 @@ QString ASCIIArtCreatorLib::makeArt(const QImage *image, const QVector<QString> 
     //то в grayImg инициализируется чёрно-белая картника
     else
         grayImg = image->convertedTo(QImage::Format_Grayscale8);
+    if (invertColor)
+        grayImg.invertPixels();
     //Выходная строка
     QString outputArt = "";
     //Проход по матрицы картинки
@@ -126,13 +128,15 @@ QString ASCIIArtCreatorLib::makeArt(const QPixmap *pixmap, const QVector<QString
     return str;
 }
 
-QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image)
+QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image, bool invertColor)
 {
     if (image->height() % 4 != 0 && image->width() % 2 != 0)
         return "";
     QString outputStr = "";
     QImage monoImg;
     monoImg = image->convertedTo(QImage::Format_Mono);
+    if (invertColor)
+        monoImg.invertPixels();
     for (int y = 0; y < monoImg.height(); y += 4) {
         for (int x = 0; x < monoImg.width(); x += 2) {
             //QImage *extraImg = new QImage(2, 4, QImage::Format_Mono); //Слишком медленно

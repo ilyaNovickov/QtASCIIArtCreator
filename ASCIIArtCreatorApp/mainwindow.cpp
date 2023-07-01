@@ -161,7 +161,7 @@ void MainWindow::on_actionaction_Start_triggered()
         currentFormat = ASCIIArtCreatorLib::formatFour;
     case 4:
         //Вывод в текстовое поле изображения ASCII
-        ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img));
+        ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img, ui->invertColorCheckBox->isChecked()));
         delete img;
         return;
     default:
@@ -170,7 +170,7 @@ void MainWindow::on_actionaction_Start_triggered()
         break;
     }
     //Вывод в текстовое поле изображения ASCII
-    ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeArt(img, currentFormat));
+    ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeArt(img, currentFormat, ui->invertColorCheckBox->isChecked()));
     //Очистка ресурса
     delete img;
 }

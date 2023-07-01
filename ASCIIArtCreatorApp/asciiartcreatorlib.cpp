@@ -135,12 +135,14 @@ QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image)
     monoImg = image->convertedTo(QImage::Format_Mono);
     for (int y = 0; y < monoImg.height(); y += 4) {
         for (int x = 0; x < monoImg.width(); x += 2) {
-            QImage *extraImg = new QImage(2, 4, QImage::Format_Mono);
+            //QImage *extraImg = new QImage(2, 4, QImage::Format_Mono); //Слишком медленно
+            QImage *extraImg = new QImage(2, 4, QImage::Format_ARGB32);
             for (int row = 0; row < 4; row++) {
                 extraImg->setPixelColor(0, row, monoImg.pixelColor(x, y + row));
                 extraImg->setPixelColor(1, row, monoImg.pixelColor(x + 1, y + row));
             }
             outputStr += ASCIIArtCreatorLib::getBrialleSymbol(extraImg);
+            delete extraImg;
         }
         outputStr += "\n";
     }
@@ -148,21 +150,23 @@ QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image)
 }
 QString ASCIIArtCreatorLib::getBrialleSymbol(const QImage *image)
 {
-    if (image->format() != QImage::Format_Mono && image->height() != 4 && image->width() != 2)
+     //if (image->format() != QImage::Format_Mono &&
+    if (image->height() != 4 && image->width() != 2)
         return "";
     QString value = "";
     for (int y = 0; y < image->height(); y++) {
         if (y != image->height() - 1) {
             value += image->pixelColor(0, y).black() == 0 ? "" : QString::number(y + 1);
-            value += image->pixelColor(0, y).black() == 0 ? "" : QString::number(y + 4);
+            value += image->pixelColor(1, y).black() == 0 ? "" : QString::number(y + 4);
         } else {
             value += image->pixelColor(0, y).black() == 0 ? "" : QString::number(7);
-            value += image->pixelColor(0, y).black() == 0 ? "" : QString::number(8);
+            value += image->pixelColor(1, y).black() == 0 ? "" : QString::number(8);
         }
     }
     //QVector<QChar> s
     QStringList list = value.split("");
     list.sort();
+    value = "";
     for (int i = 0; i < list.count(); i++) {
         value += list.at(i);
     }

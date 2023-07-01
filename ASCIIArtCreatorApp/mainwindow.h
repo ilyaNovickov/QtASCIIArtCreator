@@ -18,7 +18,6 @@ public:
 private:
     Ui::MainWindow *ui;
     void turnOnDarkTheme();
-    void formatSelect();
 
 private slots:
     void on_actionAbout_program_triggered();

@@ -132,10 +132,6 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
         ui->scrollArea->setVisible(true);
 }
 
-void MainWindow::formatSelect()
-{
-
-}
 
 //Слот создания ASCII картинки
 void MainWindow::on_actionaction_Start_triggered()
@@ -146,6 +142,11 @@ void MainWindow::on_actionaction_Start_triggered()
     //Если в текстовом поле есть текст, то очистить его
     if (!(ui->plainTextEdit->toPlainText().isNull()))
         ui->plainTextEdit->clear();
+    //Иницализация изображения для обработки
+    //Изображение принимает размер в зависимости от
+    //значений SpineBox
+    QImage *img = new QImage(ui->label->pixmap().toImage().scaled(ui->widthSpineBox->value(),
+                                                                  ui->heightSpineBox->value()));
     //Вектор с форматом ASCII картинки
     QVector<QString> currentFormat;
     //Выбор формата в зависимости от combobox
@@ -159,24 +160,17 @@ void MainWindow::on_actionaction_Start_triggered()
     case 3:
         currentFormat = ASCIIArtCreatorLib::formatFour;
     case 4:
-
-        break;
+        //Вывод в текстовое поле изображения ASCII
+        ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img));
+        delete img;
+        return;
     default:
     case 2:
         currentFormat = ASCIIArtCreatorLib::formatThree;
         break;
     }
-    //Иницализация изображения для обработки
-    //Изображение принимает размер в зависимости от
-    //значений SpineBox
-    QImage *img = new QImage(ui->label->pixmap().toImage().scaled(ui->widthSpineBox->value(),
-                                                                  ui->heightSpineBox->value()));
-    /*
     //Вывод в текстовое поле изображения ASCII
     ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeArt(img, currentFormat));
-    */
-    ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img));
-
     //Очистка ресурса
     delete img;
 }

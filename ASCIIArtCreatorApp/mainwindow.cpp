@@ -20,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItems(QStringList() << "Format №1"
                                          << "Format №2"
                                          << "Format №3"
-                                         << "Format №4");
+                                         << "Format №4"
+                                         << "Format \"Braille\"");
     //По умолчанию в ComboBox выбран второй набор
     ui->comboBox->setCurrentIndex(2);
 }
@@ -131,6 +132,11 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
         ui->scrollArea->setVisible(true);
 }
 
+void MainWindow::formatSelect()
+{
+
+}
+
 //Слот создания ASCII картинки
 void MainWindow::on_actionaction_Start_triggered()
 {
@@ -152,6 +158,9 @@ void MainWindow::on_actionaction_Start_triggered()
         break;
     case 3:
         currentFormat = ASCIIArtCreatorLib::formatFour;
+    case 4:
+
+        break;
     default:
     case 2:
         currentFormat = ASCIIArtCreatorLib::formatThree;

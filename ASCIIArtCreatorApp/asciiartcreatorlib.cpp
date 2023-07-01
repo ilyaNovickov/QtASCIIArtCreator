@@ -63,8 +63,8 @@ namespace ASCIIArtCreatorLib {
     QString makeArt(const QImage *, const QVector<QString>);
     QString makeArt(const QPixmap *, const QVector<QString>);
 
-    QString makeBrialleArt(const QImage *);
-    QString getBrialleSymbol(const QImage *);
+    QString makeArt(const QImage *, QMultiMap<int, QString>);
+    QString getCharByColor(const QImage *, QMultiMap<int, QString>);
 }
 
 //Получение симбола, соотведствующегося цвету
@@ -126,7 +126,7 @@ QString ASCIIArtCreatorLib::makeArt(const QPixmap *pixmap, const QVector<QString
     return str;
 }
 
-QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image)
+QString ASCIIArtCreatorLib::makeArt(const QImage *image, QMultiMap<int, QString> dict)
 {
     if (image->height() % 4 != 0 && image->width() % 2 != 0)
         return "";
@@ -141,14 +141,14 @@ QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image)
                 extraImg->setPixelColor(0, row, monoImg.pixelColor(x, y + row));
                 extraImg->setPixelColor(1, row, monoImg.pixelColor(x + 1, y + row));
             }
-            outputStr += ASCIIArtCreatorLib::getBrialleSymbol(extraImg);
+            outputStr += ASCIIArtCreatorLib::getCharByColor(extraImg, dict);
             delete extraImg;
         }
         outputStr += "\n";
     }
     return outputStr;
 }
-QString ASCIIArtCreatorLib::getBrialleSymbol(const QImage *image)
+QString ASCIIArtCreatorLib::getCharByColor(const QImage *image, QMultiMap<int, QString>)
 {
      //if (image->format() != QImage::Format_Mono &&
     if (image->height() != 4 && image->width() != 2)
@@ -163,7 +163,6 @@ QString ASCIIArtCreatorLib::getBrialleSymbol(const QImage *image)
             value += image->pixelColor(1, y).black() == 0 ? "" : QString::number(8);
         }
     }
-    //QVector<QChar> s
     QStringList list = value.split("");
     list.sort();
     value = "";

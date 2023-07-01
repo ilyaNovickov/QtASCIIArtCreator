@@ -61,9 +61,9 @@ namespace ASCIIArtCreatorLib {
     //Методы для обработки картинок
     QString getCharByColor(const QColor, const QVector<QString>);
     QString makeArt(const QImage *, const QVector<QString>, bool invertColor = false);
-    QString makeArt(const QPixmap *, const QVector<QString>);
-
+    QString makeArt(const QPixmap *, const QVector<QString>, bool invertColor = false);
     QString makeBrialleArt(const QImage *, bool invertColor = false);
+    QString makeBrialleArt(const QPixmap *, bool invertColor = false);
     QString getBrialleSymbol(const QImage *);
 }
 
@@ -100,6 +100,7 @@ QString ASCIIArtCreatorLib::makeArt(const QImage *image, const QVector<QString> 
     //то в grayImg инициализируется чёрно-белая картника
     else
         grayImg = image->convertedTo(QImage::Format_Grayscale8);
+    //Инвертировать цвета при необходимости
     if (invertColor)
         grayImg.invertPixels();
     //Выходная строка
@@ -119,45 +120,63 @@ QString ASCIIArtCreatorLib::makeArt(const QImage *image, const QVector<QString> 
 }
 
 //Перегруженная версия makeArt(QImage, ...)
-QString ASCIIArtCreatorLib::makeArt(const QPixmap *pixmap, const QVector<QString> formatArray)
+QString ASCIIArtCreatorLib::makeArt(const QPixmap *pixmap, const QVector<QString> formatArray, bool invertColor)
 {
     //Инициализация переменной типа QImage
     QImage image = pixmap->toImage();
     //Инициализация ASCII картинки
-    QString str = makeArt(&image, formatArray);
+    QString str = makeArt(&image, formatArray, invertColor);
     return str;
 }
 
+//Создание ASCII картинки из симболов штфра Брайля
 QString ASCIIArtCreatorLib::makeBrialleArt(const QImage *image, bool invertColor)
 {
+    //Изображение лоджно иметь размеры 2х4
     if (image->height() % 4 != 0 && image->width() % 2 != 0)
         return "";
+    //Выходная строка
     QString outputStr = "";
+    //Инициализация двухцветного изображения
     QImage monoImg;
+    //Преобразование изображени в двухцветное
     monoImg = image->convertedTo(QImage::Format_Mono);
+    //Инвертировать цвета при необходимости
     if (invertColor)
         monoImg.invertPixels();
+    //Проход по матрицы иображения
+    //Изображение делится на более маленькие изображения размером 2х4
     for (int y = 0; y < monoImg.height(); y += 4) {
         for (int x = 0; x < monoImg.width(); x += 2) {
             //QImage *extraImg = new QImage(2, 4, QImage::Format_Mono); //Слишком медленно
+            //Инициализация доп картинки размером 2х4
             QImage *extraImg = new QImage(2, 4, QImage::Format_ARGB32);
+            //Добавление в доп изображение цветов
             for (int row = 0; row < 4; row++) {
                 extraImg->setPixelColor(0, row, monoImg.pixelColor(x, y + row));
                 extraImg->setPixelColor(1, row, monoImg.pixelColor(x + 1, y + row));
             }
+            //Получение симбола Брайля
             outputStr += ASCIIArtCreatorLib::getBrialleSymbol(extraImg);
-            delete extraImg;
+            delete extraImg;//Очистка ресурсов
         }
-        outputStr += "\n";
+        outputStr += "\n";//Перенос на новую строку
     }
+    //Возврат строки ASCII картинки
     return outputStr;
 }
+
+//Получение симбола шифра Брайля
 QString ASCIIArtCreatorLib::getBrialleSymbol(const QImage *image)
 {
-     //if (image->format() != QImage::Format_Mono &&
+    //Изображение должно быть размером 2х4 пикселя
+    //if (image->format() != QImage::Format_Mono &&
     if (image->height() != 4 && image->width() != 2)
         return "";
+    //Строка значения, которое соотведствует номеру симбола Брайля
     QString value = "";
+    //Проход по картинки
+    //О номерах симболов Брайля : https://ru.wikipedia.org/wiki/%D0%A8%D1%80%D0%B8%D1%84%D1%82_%D0%91%D1%80%D0%B0%D0%B9%D0%BB%D1%8F
     for (int y = 0; y < image->height(); y++) {
         if (y != image->height() - 1) {
             value += image->pixelColor(0, y).black() == 0 ? "" : QString::number(y + 1);
@@ -167,12 +186,24 @@ QString ASCIIArtCreatorLib::getBrialleSymbol(const QImage *image)
             value += image->pixelColor(1, y).black() == 0 ? "" : QString::number(8);
         }
     }
-
+    //Получение списка строк
     QStringList list = value.split("");
-    list.sort();
-    value = "";
+    list.sort();//Сортировка списка
+    value = "";//Сброс значения
+    //Получение отсортированного значения
     for (int i = 0; i < list.count(); i++) {
         value += list.at(i);
     }
+    //Возврат симбола Брайля по картинки 2х4
     return ASCIIArtCreatorLib::brailleSymbols.value(value.toInt(), "");
+}
+
+//Перегруженная функция получения ASCII картинки из симболов шифра Брайля
+QString ASCIIArtCreatorLib::makeBrialleArt(const QPixmap *pixmap, bool invertColor)
+{
+    //Инициализация экземпляра класса QImage
+    QImage img = pixmap->toImage();
+    //Выходная строка
+    QString str = ASCIIArtCreatorLib::makeBrialleArt(&img, invertColor);
+    return str;
 }

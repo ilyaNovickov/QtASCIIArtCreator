@@ -162,8 +162,8 @@ void MainWindow::on_actionaction_Start_triggered()
     case 4:
         //Вывод в текстовое поле изображения ASCII
         ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img, ui->invertColorCheckBox->isChecked()));
-        delete img;
-        return;
+        delete img;//Очистка ресурсов
+        return;//Выход из метода
     default:
     case 2:
         currentFormat = ASCIIArtCreatorLib::formatThree;

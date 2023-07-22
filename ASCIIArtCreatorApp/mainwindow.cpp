@@ -43,27 +43,6 @@ void MainWindow::on_actionAbout_Qt_triggered()
     qApp->aboutQt();
 }
 
-//Вкл/Выкл тёмной темы
-void MainWindow::on_actionDark_Theme_triggered(bool checked)
-{
-    if (checked)
-        this->turnOnDarkTheme();
-    else
-        this->setStyleSheet("");
-}
-
-//Метод для загрузки тёмной темы в форм
-void MainWindow::turnOnDarkTheme()
-{
-    QFile file(":/res/qcssfile.css");
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        this->setStyleSheet(file.readAll());
-        file.close();
-    } else {
-        return;
-    }
-}
-
 //Слот для изменения значений бегунка
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
@@ -176,5 +155,22 @@ void MainWindow::on_actionaction_Start_triggered()
 }
 
 
+//Переключение между стандартными стилями
+//QApplication::setStyle("Windows");
+//QApplication::setStyle("windowsvista");
+//QApplication::setStyle("Fusion");
+void MainWindow::on_actionWindows_Style_triggered()
+{
+    QApplication::setStyle("Windows");
+}
 
+void MainWindow::on_actionWindows_Vista_Style_triggered()
+{
+    QApplication::setStyle("windowsvista");
+}
+
+void MainWindow::on_actionFusion_triggered()
+{
+    QApplication::setStyle("Fusion");
+}
 

@@ -261,7 +261,9 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionDark_Theme"/>
+    <addaction name="actionWindows_Style"/>
+    <addaction name="actionWindows_Vista_Style"/>
+    <addaction name="actionFusion"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -296,7 +298,6 @@
    <addaction name="separator"/>
    <addaction name="actionaction_Start"/>
    <addaction name="separator"/>
-   <addaction name="actionDark_Theme"/>
   </widget>
   <action name="action_Open">
    <property name="icon">
@@ -342,14 +343,6 @@
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="actionDark_Theme">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Dark Theme</string>
-   </property>
-  </action>
   <action name="actionAbout_program">
    <property name="icon">
     <iconset>
@@ -381,6 +374,21 @@
    </property>
    <property name="text">
     <string>Start</string>
+   </property>
+  </action>
+  <action name="actionWindows_Style">
+   <property name="text">
+    <string>Windows Style</string>
+   </property>
+  </action>
+  <action name="actionWindows_Vista_Style">
+   <property name="text">
+    <string>Windows Vista Style</string>
+   </property>
+  </action>
+  <action name="actionFusion">
+   <property name="text">
+    <string>Fusion Style</string>
    </property>
   </action>
  </widget>

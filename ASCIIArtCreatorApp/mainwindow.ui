@@ -261,9 +261,6 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionWindows_Style"/>
-    <addaction name="actionWindows_Vista_Style"/>
-    <addaction name="actionFusion"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -374,21 +371,6 @@
    </property>
    <property name="text">
     <string>Start</string>
-   </property>
-  </action>
-  <action name="actionWindows_Style">
-   <property name="text">
-    <string>Windows Style</string>
-   </property>
-  </action>
-  <action name="actionWindows_Vista_Style">
-   <property name="text">
-    <string>Windows Vista Style</string>
-   </property>
-  </action>
-  <action name="actionFusion">
-   <property name="text">
-    <string>Fusion Style</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QFileDialog>
+#include <QStyleFactory>
 #include "asciiartcreatorlib.cpp"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -24,6 +25,20 @@ MainWindow::MainWindow(QWidget *parent)
                                          << "Format \"Braille\"");
     //По умолчанию в ComboBox выбран второй набор
     ui->comboBox->setCurrentIndex(2);
+
+    //Получение списка со стилями
+    QStringList listofStyles = QStyleFactory::keys();
+    //Проход по списку
+    for (QString styleName : listofStyles) {
+        //Инициализация переменной с QAction
+        QAction *styleAction = qobject_cast<QAction *>( new QAction(this->ui->menuSettings) );
+        //Установка во свойство Text названия стиля
+        styleAction->setText(styleName);
+        //Подключение сигнала к слоту установки стиля
+        connect(styleAction, SIGNAL(triggered()), this, SLOT(setStyle()));
+        //Добавление QAction в меню
+        ui->menuSettings->addAction(styleAction);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -143,6 +158,7 @@ void MainWindow::on_actionaction_Start_triggered()
         ui->plainTextEdit->setPlainText(ASCIIArtCreatorLib::makeBrialleArt(img, ui->invertColorCheckBox->isChecked()));
         delete img;//Очистка ресурсов
         return;//Выход из метода
+
     default:
     case 2:
         currentFormat = ASCIIArtCreatorLib::formatThree;
@@ -154,23 +170,14 @@ void MainWindow::on_actionaction_Start_triggered()
     delete img;
 }
 
-
-//Переключение между стандартными стилями
-//QApplication::setStyle("Windows");
-//QApplication::setStyle("windowsvista");
-//QApplication::setStyle("Fusion");
-void MainWindow::on_actionWindows_Style_triggered()
+//Слот установки стиля
+void MainWindow::setStyle()
 {
-    QApplication::setStyle("Windows");
+    //Получение отправителя сигнала
+    QAction *obj = qobject_cast<QAction *>(sender());
+    //Если отправитель сигнала получен, то установка стиля, согласно свойству text
+    if (obj != nullptr)
+        QApplication::setStyle(obj->text());
 }
 
-void MainWindow::on_actionWindows_Vista_Style_triggered()
-{
-    QApplication::setStyle("windowsvista");
-}
-
-void MainWindow::on_actionFusion_triggered()
-{
-    QApplication::setStyle("Fusion");
-}
 

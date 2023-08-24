@@ -1,5 +1,9 @@
 #include "mainwindow.h"
+#ifdef Q_OS_ANDROID
+#include "ui_mainwindowAndroid.h"
+#else
 #include "ui_mainwindow.h"
+#endif
 #include <QMessageBox>
 #include <QFile>
 #include <QImage>

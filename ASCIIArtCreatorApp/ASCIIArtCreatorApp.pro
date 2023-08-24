@@ -17,7 +17,8 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    mainwindowAndroid.ui
 
 TRANSLATIONS += \
     ASCIIArtCreatorApp_en_150.ts
